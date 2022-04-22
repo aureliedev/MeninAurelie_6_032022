@@ -9,9 +9,9 @@ const cryptoJs = require('crypto-js');
 /* Importation jsonwebtoken */
 const jwt = require('jsonwebtoken')
 
-/* Utilisation de dotenv por masquer JWT_SECRET_TOKEN */
+/* Utilisation de dotenv pour masquer JWT_TOKEN_SECRET */
 require('dotenv').config();
-const JWT_SECRET_TOKEN = process.env.JWT_SECRET_TOKEN;
+const JWT_TOKEN_SECRET = process.env.JWT_TOKEN_SECRET;
 
 /* Importation User model */
 const User = require('../models/User');
@@ -32,16 +32,16 @@ schema
 .has().not().spaces()
 .has().symbols()
 
-/* Création du middleware SignUp pour créer de nouveaux utilisateurs */
+/* Création du SIGNUP pour créer de nouveaux utilisateurs */
 exports.signup = (req, res, next) => {
     /* Vérification de la validité des e-mails */
     if(!mailValidator.validate(req.body.email)){
        return res.status(500).json({message : "Adresse email non valide"})
-    /* Vérification de la validité des mots de passe */
+    /* Vérification de la validité des MDP */
     } else if (!schema.validate(req.body.password)){
-        return res.status(500).json({message : "Mot de passe non valide - Utilisez des majuscules, minuscules, chiffres et symboles, aucun espace, pour 8(min) à 16(max) caractères."})
+        return res.status(500).json({message : "MDP non valide - Utilisez des majuscules, minuscules, chiffres et symboles, aucun espace, de 8 caractères (min) à 16 caractères(max)."})
     } else {
-    /* Si l'email et le mot de passe sont valides, on chiffre l'email et le mot de passe avant de créer un nouvel utilisateur */
+    /* Si l'email et le MDP sont valides, on chiffre l'email et le MDP avant de créer un nouvel utilisateur */
     const cryptedEmail = cryptoJs.SHA256(req.body.email, process.env.EMAIL_ENCRYPTION_KEY).toString();
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
@@ -58,7 +58,7 @@ exports.signup = (req, res, next) => {
     }
 };
 
-/* Création du middleware login pour connecter les utilisateurs existants */
+/* Création du LOGIN pour connecter les utilisateurs existants */
 exports.login = (req, res, next) => {
     /* Cryptage de l'email pour retrouver l'utilisateur dans la base de données */
     const cryptedEmail = cryptoJs.SHA256(req.body.email, process.env.EMAIL_ENCRYPTION_KEY).toString();
@@ -78,7 +78,7 @@ exports.login = (req, res, next) => {
                 userId: user._id,
                 token: jwt.sign(
                     {userId: user._id},
-                    JWT_SECRET_TOKEN,
+                    JWT_TOKEN_SECRET,
                     {expiresIn: '24h'}
                 )
             })

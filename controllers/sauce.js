@@ -70,13 +70,13 @@ exports.modifySauce = (req, res, next) => {
       !regexInputs.test(sauceObject.hear)){
         return res.status(401).json({message : "Certains champs sont renseignés avec des caractères invalides"})
     }
-    /* Si les entrées sont valides, MAJde la sauce */
+    /* Si les entrées sont valides, MAJ de la sauce */
     Sauce.updateOne({_id: req.params.id}, {...sauceObject, _id: req.params.id})
     .then(() => res.status(200).json({message: "Sauce modifiée"}))
     .catch(error => res.status(400).json({error}));
   };
 
-/* Création de la fonction pour SUPPRIMER une sauce spécifique */
+/* Fonction pour SUPPRIMER une sauce spécifique */
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({_id: req.params.id})
     .then(sauce => {
