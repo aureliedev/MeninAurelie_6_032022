@@ -32,7 +32,7 @@ const app = express();
 /* Création d'un middleware utilisant la méthode .json d'express pour avoir accès au corps de la requête */
 app.use(express.json());
 
-/* Spécification HEARDERS de contrôle d'accès spécifiques pour tous les objets de réponse afin d'autoriser les demandes d'origine croisée (et d'éviter les erreurs CORS). */
+/* HEARDERS de contrôle d'accès spécifiques pour tous les objets de réponse pour autoriser les demandes d'origine croisée ( & éviter les erreurs CORS) */
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -47,7 +47,7 @@ app.use('/api/auth', userRoutes);
 /* Sauvegarde sauce routes */
 app.use('/api/sauces', sauceRoutes);
 
-/* Création d'un middleware pour gérer les demandes d'ajout d'images dans le dossier images */
+/* Création d'un middleware pour gérer les demandes d'ajout d'images dans dossier images */
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 /* Exporter d' EXPRESS pour l'utiliser sur d'autres fichiers */

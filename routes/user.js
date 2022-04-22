@@ -3,7 +3,7 @@
 /* Importation express */
 const express = require('express');
 
-/* Création d'un routeur avec la fonction Router() */
+/* Création d'un routeur avec la fonction Router()*/
 const router = express.Router();
 
 /* Importation user controller */

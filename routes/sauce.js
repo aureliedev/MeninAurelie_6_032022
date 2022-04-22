@@ -1,6 +1,6 @@
 /******************** CONFIGURATION SAUCE ROUTER ********************/
 
-/* Importaion EXPRESS */
+/* Importation EXPRESS */
 const express= require('express');
 
 /* Importation de la fonction router d'EXPRESS */
